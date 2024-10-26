@@ -63,7 +63,7 @@ count = 0
 keys=[]
 def on_press(key):
     global keys,count
-    print(key)
+    print(key) #remove this
     keys.append(key)
     count += 1
 
