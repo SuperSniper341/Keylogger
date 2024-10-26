@@ -30,7 +30,6 @@ system_information= "systeminfo.txt"
 screenshot_information= "screenshots.png"
 system_information = "syseminfo.txt"
 clipboard_information = "clipboard.txt"
-screenshot_information = "screenshot.png"
 
 
 file_path = os.getcwd()
