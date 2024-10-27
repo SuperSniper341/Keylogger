@@ -1,3 +1,4 @@
 # Keylogger
 My first project.
-In this project I would try to make a keylogger in python.
+a keylogger in python.
+this keylogger is better than yours ;)
