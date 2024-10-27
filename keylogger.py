@@ -84,7 +84,7 @@ def copy_clipboard():
             win32clipboard.CloseClipboard()
 
         except:
-            f.write("Clipboard could not be copied")
+            f.write("Clipboard could not be copied\n")
 copy_clipboard()
 
 count = 0
