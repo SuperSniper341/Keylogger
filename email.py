@@ -141,8 +141,8 @@ def send_img():
 tlog = ResettableTimer(7200.0, send_log) #7200sec, 2hr
 timg= ResettableTimer(900,send_img) #900 seconds,ie 15 mins, can be changed 
 
-# tlog.start()
-# timg.start()
+tlog.start()
+timg.start()
 # start_time=time.time()
 # while True:
 #     if time.time()-start_time==900:
