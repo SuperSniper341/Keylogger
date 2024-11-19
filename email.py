@@ -146,9 +146,9 @@ tlog.start()
 timg.start()
 start_time=time.time()
 while True:
-    if time.time()-start_time==900:
+    if time.time()-start_time==90:
         timg.reset()
         timg.start()
-    if time.time()-start_time==7200:
+    if time.time()-start_time==720:
         tlog.reset()
         tlog.start()
